@@ -15,6 +15,7 @@
 <body>
   <div id="root"></div>
   <script type="text/babel">
+    // No import statements; use global React and ReactDOM from CDNs
     const { useState, useEffect, useRef } = React;
 
     function App() {
@@ -133,16 +134,16 @@
           {/* Features Section */}
           <section className="px-6 md:px-12 lg:px-24 mb-20">
             <h2 className="text-xl md:text-2xl font-bold mb-6 text-orange-500">Преимущества</h2>
-            <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {features.map((feature, idx) => (
                 <div
                   key={idx}
-                  className="border border-gray-800 p-5 rounded-md hover:border-orange-500 transition-colors duration-300 flex items-start gap-4"
+                  className="border border-gray-800 p-4 rounded-md hover:border-orange-500 transition-colors duration-300 flex items-start gap-3 max-w-sm"
                 >
-                  <div className="text-orange-500">{feature.icon}</div>
+                  <div className="text-orange-500 flex-shrink-0">{feature.icon}</div>
                   <div>
-                    <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
-                    <p className="text-gray-400 text-sm">{feature.description}</p>
+                    <h3 className="text-base font-bold mb-1">{feature.title}</h3>
+                    <p className="text-gray-400 text-xs">{feature.description}</p>
                   </div>
                 </div>
               ))}
