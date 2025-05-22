@@ -7,15 +7,15 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- React and ReactDOM CDNs -->
-  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.development.js"></script>
   <!-- Babel CDN for JSX transformation -->
-  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.6/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.25.6/babel.min.js"></script>
 </head>
 <body>
   <div id="root"></div>
-  <script type="text/babel">
-    // No import statements; use global React and ReactDOM from CDNs
+  <script type="text/babel" data-presets="react">
+    // Use global React and ReactDOM from CDNs
     const { useState, useEffect, useRef } = React;
 
     function App() {
@@ -24,24 +24,44 @@
 
       const plans = [
         {
+          name: "Искра",
+          ram: "1 ГБ",
+          cpu: "75%",
+          ssd: "5 ГБ",
+          slots: "Неограниченно",
+          price: "$0/мес (БЕСПЛАТНО)",
+          idealFor: "Подходит для игры с друзьями.",
+          emoji: "✨"
+        },
+        {
           name: "Комета",
           ram: "2 ГБ",
           cpu: "150%",
           ssd: "20 ГБ",
           slots: "Неограниченно",
           price: "$3/мес (240₽)",
-          idealFor: "Идеально для небольших серверов с друзьями!",
+          idealFor: "Хороший тариф для небольших серверов!",
           emoji: "☄️"
         },
         {
           name: "Планета",
-          ram: "3.5 ГБ",
-          cpu: "350%",
+          ram: "2.2 ГБ",
+          cpu: "225%",
           ssd: "25 ГБ",
           slots: "Неограниченно",
-          price: "$6/мес (480₽)",
+          price: "$4.5/мес (360₽)",
           idealFor: "Отлично подходит для средних проектов!",
           emoji: "🪐"
+        },
+        {
+          name: "Звезда",
+          ram: "3 ГБ",
+          cpu: "300%",
+          ssd: "25 ГБ",
+          slots: "Неограниченно",
+          price: "$6.9/мес (550₽)",
+          idealFor: "Идеально для более больших серверов!",
+          emoji: "⭐"
         }
       ];
 
@@ -131,24 +151,29 @@
             </p>
           </section>
 
-          {/* Features Section */}
-          <section className="px-6 md:px-12 lg:px-24 mb-20">
-            <h2 className="text-xl md:text-2xl font-bold mb-6 text-orange-500">Преимущества</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {features.map((feature, idx) => (
-                <div
-                  key={idx}
-                  className="border border-gray-800 p-4 rounded-md hover:border-orange-500 transition-colors duration-300 flex items-start gap-3 max-w-sm"
-                >
-                  <div className="text-orange-500 flex-shrink-0">{feature.icon}</div>
-                  <div>
-                    <h3 className="text-base font-bold mb-1">{feature.title}</h3>
-                    <p className="text-gray-400 text-xs">{feature.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+          { /* Features Section */ }
+<section className="px-6 md:px-12 lg:px-24 mb-20">
+  <h2 className="text-xl md:text-2xl font-bold mb-6 text-orange-500">Преимущества</h2>
+  <div className="flex flex-col lg:flex-row gap-4">
+    <div className="grid grid-cols-2 gap-4 flex-1">
+      {features.map((feature, idx) => (
+        <div
+          key={idx}
+          className="border border-gray-800 p-4 rounded-md hover:border-orange-500 transition-colors duration-300 flex items-start gap-3"
+        >
+          <div className="text-orange-500 flex-shrink-0">{feature.icon}</div>
+          <div>
+            <h3 className="text-base font-bold mb-1">{feature.title}</h3>
+            <p className="text-gray-400 text-xs">{feature.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+    <div className="lg:w-[400px] flex items-center justify-center">
+      <img src="consolegif.gif" alt="Server Startup Animation" className="w-[400px] h-[300px] object-contain rounded-md" />
+    </div>
+  </div>
+</section>
 
           {/* Pricing Plans */}
           <section className="px-6 md:px-12 lg:px-24 mb-20">
@@ -190,7 +215,7 @@
           <section className="px-6 md:px-12 lg:px-24 mb-20">
             <div className="border border-gray-800 p-8 rounded-md text-center">
               <h2 className="text-2xl md:text-3xl font-bold mb-4">Запусти свой сервер уже сегодня!</h2>
-              <p className="text-gray-400 mb-6">Выбери тариф, оплати через Telegram и получи доступ мгновенно.</p>
+              <p className="text-gray-400 mb-6">Выбери тариф, оплати через Telegram бота и получи доступ мгновенно.</p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <a
                   href="https://t.me/venerux_bot"
@@ -211,7 +236,7 @@
           {/* Footer */}
           <footer className="px-6 md:px-12 lg:px-24 pb-12 text-xs text-gray-600">
             <p>Venerux Hosting Provider © 2025</p>
-            <p className="mt-1">Powered by Pterodactyl®</p>
+            <p className="mt-1">Designed by bUmmy ♡</p>
           </footer>
         </div>
       );
@@ -251,8 +276,29 @@
       );
     }
 
-    // Render the app
-    ReactDOM.render(<App />, document.getElementById('root'));
+    // Error Boundary Component
+    class ErrorBoundary extends React.Component {
+      state = { hasError: false };
+
+      static getDerivedStateFromError(error) {
+        return { hasError: true };
+      }
+
+      render() {
+        if (this.state.hasError) {
+          return <h1 className="text-red-500 text-center">Something went wrong. Please check the console for details.</h1>;
+        }
+        return this.props.children;
+      }
+    }
+
+    // Render the app with createRoot
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    );
   </script>
 </body>
 </html>
