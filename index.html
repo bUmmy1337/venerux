@@ -1,32 +1,25 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Venerux — Хостинг серверов</title>
-  <script src="https://unpkg.com/react @18/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom @18/umd/react-dom.development.js" crossorigin></script>
-  <script src="https://unpkg.com/ @babel/standalone/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com "></script>
-  <style>
-    .scrollbar-hide {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    .scrollbar-hide::-webkit-scrollbar {
-      display: none;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Venerux Hosting</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React and ReactDOM CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <!-- Babel CDN for JSX transformation -->
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.6/babel.min.js"></script>
 </head>
-<body class="bg-black text-white font-mono">
+<body>
   <div id="root"></div>
-
   <script type="text/babel">
-    const { useState, useEffect } = React;
+    const { useState, useEffect, useRef } = React;
 
     function App() {
       const [hoveredPlan, setHoveredPlan] = useState(null);
-      const scrollContainerRef = React.useRef(null);
+      const scrollContainerRef = useRef(null);
 
       const plans = [
         {
@@ -76,7 +69,7 @@
 
       const games = ["Minecraft", "Terraria", "Factorio", "Mindustry", "Rust", "CS:GO", "GTA V", "Roblox"];
 
-      // Автоскролл
+      // Автоскролл для строки с играми
       useEffect(() => {
         const container = scrollContainerRef.current;
         if (!container) return;
@@ -100,7 +93,7 @@
 
       return (
         <div className="min-h-screen bg-black text-white font-mono">
-          {/* Scrolling Game List */}
+          {/* Scrolling Game List with Auto Scroll */}
           <div className="overflow-hidden whitespace-nowrap py-4 px-6 border-b border-gray-800 relative">
             <div
               ref={scrollContainerRef}
@@ -115,6 +108,7 @@
                   {game}
                 </span>
               ))}
+              {/* Duplicate for seamless loop */}
               {games.map((game, i) => (
                 <span
                   key={`dup-${i}`}
@@ -181,7 +175,7 @@
                   </ul>
                   <p className="text-xs text-gray-500 italic mb-4">{plan.idealFor}</p>
                   <a
-                    href="https://t.me/venerux_bot "
+                    href="https://t.me/venerux_bot"
                     className="block text-center text-orange-500 font-medium text-sm uppercase tracking-wide border border-orange-500 py-2 rounded hover:bg-orange-500 hover:text-black transition-colors"
                   >
                     Выбрать тариф
@@ -191,20 +185,20 @@
             </div>
           </section>
 
-          {/* CTA Section */}
+          {/* Call to Action */}
           <section className="px-6 md:px-12 lg:px-24 mb-20">
             <div className="border border-gray-800 p-8 rounded-md text-center">
               <h2 className="text-2xl md:text-3xl font-bold mb-4">Запусти свой сервер уже сегодня!</h2>
               <p className="text-gray-400 mb-6">Выбери тариф, оплати через Telegram и получи доступ мгновенно.</p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <a
-                  href="https://t.me/venerux_bot "
+                  href="https://t.me/venerux_bot"
                   className="py-3 px-6 bg-orange-500 text-black font-bold uppercase tracking-wider border border-orange-500 hover:bg-transparent hover:text-orange-500 transition-colors"
                 >
                   Купить сервер
                 </a>
                 <a
-                  href="https://dash.venerux.ru "
+                  href="https://dash.venerux.ru"
                   className="py-3 px-6 bg-transparent border border-gray-600 text-gray-400 font-bold uppercase tracking-wider hover:border-orange-500 hover:text-orange-500 transition-colors"
                 >
                   Панель управления
@@ -215,14 +209,14 @@
 
           {/* Footer */}
           <footer className="px-6 md:px-12 lg:px-24 pb-12 text-xs text-gray-600">
-            <p>Venerux Hosting Provider &copy; 2025</p>
+            <p>Venerux Hosting Provider © 2025</p>
             <p className="mt-1">Powered by Pterodactyl®</p>
           </footer>
         </div>
       );
     }
 
-    // SVG Icons
+    // --- SVG Icons ---
     function LightningIcon() {
       return (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
@@ -256,10 +250,8 @@
       );
     }
 
-    // === Конец кода ===
-
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
+    // Render the app
+    ReactDOM.render(<App />, document.getElementById('root'));
   </script>
 </body>
 </html>
