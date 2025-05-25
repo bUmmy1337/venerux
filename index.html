@@ -7,90 +7,289 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- React and ReactDOM CDNs -->
-  <script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.development.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   <!-- Babel CDN for JSX transformation -->
-  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.25.6/babel.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+    }
+    
+    .card-gradient {
+      background: linear-gradient(145deg, #1f1f1f 0%, #141414 100%);
+    }
+    
+    .glow-orange {
+      box-shadow: 0 0 20px rgba(251, 146, 60, 0.3);
+    }
+    
+    .text-gradient {
+      background: linear-gradient(135deg, #fb923c 0%, #f97316 50%, #ea580c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .venerux-gradient {
+      background: linear-gradient(45deg, #ff6b35, #f7931e, #ffaa00, #ff8c42, #ff6b35);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 3s ease-in-out infinite;
+    }
+
+    .flag-icon {
+  width: 24px;
+  height: 18px;
+  border-radius: 3px;
+  display: inline-block;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.flag-ru {
+  background: linear-gradient(to bottom, #ffffff 33%, #0052cc 33%, #0052cc 66%, #cc0000 66%);
+}
+
+.flag-de {
+  background: linear-gradient(to bottom, #000000 33%, #dd0000 33%, #dd0000 66%, #ffcc00 66%);
+}
+    
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    
+    .hover-lift {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    .pulse-glow {
+      animation: pulse-glow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes pulse-glow {
+      from { box-shadow: 0 0 20px rgba(251, 146, 60, 0.4); }
+      to { box-shadow: 0 0 30px rgba(251, 146, 60, 0.8); }
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
 </head>
 <body>
   <div id="root"></div>
-  <script type="text/babel" data-presets="react">
-    // Use global React and ReactDOM from CDNs
+  <script type="text/babel">
     const { useState, useEffect, useRef } = React;
 
     function App() {
       const [hoveredPlan, setHoveredPlan] = useState(null);
+      const [selectedLocation, setSelectedLocation] = useState('all');
+      const [selectedProcessor, setSelectedProcessor] = useState('all');
+      const [hoveredFeature, setHoveredFeature] = useState(null);
       const scrollContainerRef = useRef(null);
 
-      const plans = [
+      const scrollToPricing = () => {
+        const pricingSection = document.getElementById('pricing');
+        if (pricingSection) {
+          pricingSection.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      };
+
+      const allPlans = [
+        // Москва
         {
-          name: "Искра",
-          ram: "1 ГБ",
-          cpu: "65%",
-          ssd: "4 ГБ",
-          slots: "Неограниченно",
-          price: "$0.5/мес (39₽)",
-          idealFor: "Подходит для игры с друзьями.",
-          emoji: "✨"
-        },
-        {
-          name: "Комета",
+          name: "Луна",
           ram: "2 ГБ",
-          cpu: "150%",
-          ssd: "20 ГБ",
+          cpu: "200%",
+          ssd: "25 ГБ",
           slots: "Неограниченно",
           price: "$3/мес (240₽)",
-          idealFor: "Хороший тариф для небольших серверов!",
-          emoji: "☄️"
+          idealFor: "Естественный спутник для ваших проектов!",
+          emoji: "🌙",
+          location: "moscow",
+          processor: "amd-epyc",
+          locationName: "Москва",
+          processorName: "AMD EPYC 7551P",
+          popular: true
         },
         {
-          name: "Планета",
-          ram: "2.2 ГБ",
-          cpu: "225%",
-          ssd: "25 ГБ",
+          name: "Юпитер",
+          ram: "4 ГБ",
+          cpu: "400%",
+          ssd: "50 ГБ",
           slots: "Неограниченно",
-          price: "$4.5/мес (360₽)",
-          idealFor: "Отлично подходит для средних проектов!",
-          emoji: "🪐"
+          price: "$6/мес (480₽)",
+          idealFor: "Газовый гигант производительности!",
+          emoji: "🪐",
+          location: "moscow",
+          processor: "amd-epyc",
+          locationName: "Москва",
+          processorName: "AMD EPYC 7551P",
+          popular: false
+        },
+        // Франкфурт
+        {
+          name: "Сатурн",
+          ram: "1 ГБ",
+          cpu: "50%",
+          ssd: "5 ГБ",
+          slots: "Неограниченно",
+          price: "$0/мес (БЕСПЛАТНО)",
+          idealFor: "Кольца стабильности вокруг вашего сервера!",
+          emoji: "🪐",
+          location: "frankfurt",
+          processor: "intel-i9",
+          locationName: "Франкфурт",
+          processorName: "Intel Core i9-9900K",
+          popular: false
         },
         {
-          name: "Звезда",
-          ram: "3 ГБ",
-          cpu: "300%",
-          ssd: "25 ГБ",
+          name: "Нептун",
+          ram: "1 ГБ",
+          cpu: "100%",
+          ssd: "8 ГБ",
           slots: "Неограниченно",
-          price: "$6.9/мес (550₽)",
-          idealFor: "Идеально для более больших серверов!",
-          emoji: "⭐"
+          price: "$0.65/мес (50₽)",
+          idealFor: "Ледяной гигант максимальной мощности!",
+          emoji: "🔵",
+          location: "frankfurt",
+          processor: "intel-i9",
+          locationName: "Франкфурт",
+          processorName: "Intel Core i9-9900K",
+          popular: false
+        },
+        // Франкфурт
+        {
+          name: "Астероид",
+          ram: "1 ГБ",
+          cpu: "100%",
+          ssd: "10 ГБ",
+          slots: "Неограниченно",
+          price: "$1/мес (80₽)",
+          idealFor: "Малое небесное тело больших возможностей.",
+          emoji: "🌑",
+          location: "frankfurt",
+          processor: "ryzen-9-3900",
+          locationName: "Франкфурт",
+          processorName: "Ryzen 9 3900",
+          popular: false
+        },
+        {
+          name: "Галактика",
+          ram: "4 ГБ",
+          cpu: "250%",
+          ssd: "40 ГБ",
+          slots: "Неограниченно",
+          price: "$3.5/мес (280₽)",
+          idealFor: "Спиральная структура вашего проекта!",
+          emoji: "🌌",
+          location: "frankfurt",
+          processor: "ryzen-9-3900",
+          locationName: "Франкфурт",
+          processorName: "Ryzen 9 3900",
+          popular: true
+        },
+        {
+          name: "Квазар",
+          ram: "8 ГБ",
+          cpu: "500%",
+          ssd: "80 ГБ",
+          slots: "Неограниченно",
+          price: "$7/мес (560₽)",
+          idealFor: "Сверхмассивная энергия для серьезных задач!",
+          emoji: "💫",
+          location: "frankfurt",
+          processor: "ryzen-9-3900",
+          locationName: "Франкфурт",
+          processorName: "Ryzen 9 3900",
+          popular: false
+        },
+        {
+          name: "Вселенная",
+          ram: "16 ГБ",
+          cpu: "750%",
+          ssd: "160 ГБ",
+          slots: "Неограниченно",
+          price: "$12/мес (960₽)",
+          idealFor: "Бесконечные возможности космоса!",
+          emoji: "🌠",
+          location: "frankfurt",
+          processor: "ryzen-9-3900",
+          locationName: "Франкфурт",
+          processorName: "Ryzen 9 3900",
+          popular: false
+        },
+        {
+          name: "Большой Взрыв",
+          ram: "24 ГБ",
+          cpu: "1000%",
+          ssd: "220 ГБ",
+          slots: "Неограниченно",
+          price: "$20/мес (1600₽)",
+          idealFor: "Рождение новой вселенной серверов!",
+          emoji: "💥",
+          location: "frankfurt",
+          processor: "ryzen-9-3900",
+          locationName: "Франкфурт",
+          processorName: "Ryzen 9 3900",
+          popular: false
         }
       ];
+
+      const filteredPlans = allPlans.filter(plan => {
+        const locationMatch = selectedLocation === 'all' || plan.location === selectedLocation;
+        const processorMatch = selectedProcessor === 'all' || plan.processor === selectedProcessor;
+        return locationMatch && processorMatch;
+      });
 
       const features = [
         {
           title: "Мгновенный запуск",
           description: "Создайте сервер всего за пару кликов — без задержек и сложных настроек.",
-          icon: <LightningIcon />
+          icon: React.createElement(LightningIcon),
+          color: "from-yellow-400 to-orange-500"
         },
         {
           title: "DDOS-защита",
           description: "Ваш сервер всегда в безопасности благодаря надёжной системе защиты от атак.",
-          icon: <ShieldIcon />
+          icon: React.createElement(ShieldIcon),
+          color: "from-blue-400 to-cyan-500"
         },
         {
           title: "Автоматические бэкапы",
           description: "Никогда не потеряете важные данные — резервные копии создаются ежедневно.",
-          icon: <BackupIcon />
+          icon: React.createElement(BackupIcon),
+          color: "from-green-400 to-emerald-500"
         },
         {
           title: "Поддержка 24/7",
           description: "Наши специалисты всегда готовы помочь — в любое время суток.",
-          icon: <SupportIcon />
+          icon: React.createElement(SupportIcon),
+          color: "from-purple-400 to-pink-500"
         }
       ];
 
       const games = ["Minecraft", "Terraria", "Factorio", "Mindustry", "Python", "NodeJS", "Among US", "TeamSpeak"];
 
-      // Автоскролл для строки с играми
       useEffect(() => {
         const container = scrollContainerRef.current;
         if (!container) return;
@@ -108,196 +307,460 @@
         };
 
         const id = requestAnimationFrame(animateScroll);
-
         return () => cancelAnimationFrame(id);
       }, []);
 
-      return (
-        <div className="min-h-screen bg-black text-white font-mono">
-          {/* Scrolling Game List with Auto Scroll */}
-          <div className="overflow-hidden whitespace-nowrap py-4 px-6 border-b border-gray-800 relative">
-            <div
-              ref={scrollContainerRef}
-              className="flex gap-4"
-              style={{ whiteSpace: 'nowrap' }}
-            >
-              {games.map((game, i) => (
-                <span
-                  key={i}
-                  className="inline-block px-6 py-1 mx-2 border border-orange-500 text-orange-500 text-xl md:text-2xl font-bold tracking-wider"
-                >
-                  {game}
-                </span>
-              ))}
-              {/* Duplicate for seamless loop */}
-              {games.map((game, i) => (
-                <span
-                  key={`dup-${i}`}
-                  className="inline-block px-6 py-1 mx-2 border border-orange-500 text-orange-500 text-xl md:text-2xl font-bold tracking-wider"
-                >
-                  {game}
-                </span>
-              ))}
-            </div>
-          </div>
+      return React.createElement('div', { className: "min-h-screen gradient-bg text-white" },
+        // Navigation
+        React.createElement('nav', { className: "px-6 md:px-12 lg:px-24 py-6 border-b border-gray-800/50 backdrop-blur-sm" },
+          React.createElement('div', { className: "flex justify-between items-center" },
+            React.createElement('div', { className: "text-2xl font-bold venerux-gradient" }, "Venerux"),
+            React.createElement('div', { className: "hidden md:flex space-x-8 text-sm" },
+              React.createElement('a', { href: "#pricing", className: "text-gray-300 hover:text-orange-400 transition-colors" }, "Тарифы"),
+              React.createElement('a', { href: "#features", className: "text-gray-300 hover:text-orange-400 transition-colors" }, "Преимущества"),
+              React.createElement('a', { href: "#locations", className: "text-gray-300 hover:text-orange-400 transition-colors" }, "Локации"),
+              React.createElement('a', { 
+                href: "https://t.me/venerux_bot", 
+                className: "bg-gradient-to-r from-orange-500 to-red-500 px-4 py-2 rounded-lg text-white font-medium hover:from-orange-600 hover:to-red-600 transition-all" 
+              }, "Купить сервер")
+            )
+          )
+        ),
 
-          {/* Hero Section */}
-          <section className="px-6 md:px-12 lg:px-24 pt-16 pb-20">
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
-              <span className="text-orange-500">Venerux</span> — мощный хостинг для серверов Minecraft и не только.
-            </h1>
-            <p className="text-gray-400 max-w-xl">
-              Простой запуск, стабильная работа, круглосуточная поддержка.
-            </p>
-          </section>
+        // Scrolling Game List
+        React.createElement('div', { className: "overflow-hidden whitespace-nowrap py-6 border-b border-gray-800/50 bg-gradient-to-r from-gray-900/50 to-gray-800/50" },
+          React.createElement('div', { 
+            ref: scrollContainerRef,
+            className: "flex gap-6",
+            style: { whiteSpace: 'nowrap' }
+          },
+            ...games.map((game, i) =>
+              React.createElement('span', {
+                key: i,
+                className: "inline-block px-6 py-3 mx-2 bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-500/50 text-orange-400 text-lg font-semibold tracking-wider rounded-lg backdrop-blur-sm"
+              }, game)
+            ),
+            ...games.map((game, i) =>
+              React.createElement('span', {
+                key: `dup-${i}`,
+                className: "inline-block px-6 py-3 mx-2 bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-500/50 text-orange-400 text-lg font-semibold tracking-wider rounded-lg backdrop-blur-sm"
+              }, game)
+            )
+          )
+        ),
 
-          { /* Features Section */ }
-<section className="px-6 md:px-12 lg:px-24 mb-20">
-  <h2 className="text-xl md:text-2xl font-bold mb-6 text-orange-500">Преимущества</h2>
-  <div className="flex flex-col lg:flex-row gap-4">
-    <div className="grid grid-cols-2 gap-4 flex-1">
-      {features.map((feature, idx) => (
-        <div
-          key={idx}
-          className="border border-gray-800 p-4 rounded-md hover:border-orange-500 transition-colors duration-300 flex items-start gap-3"
-        >
-          <div className="text-orange-500 flex-shrink-0">{feature.icon}</div>
-          <div>
-            <h3 className="text-base font-bold mb-1">{feature.title}</h3>
-            <p className="text-gray-400 text-xs">{feature.description}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-    <div className="lg:w-[400px] flex items-center justify-center">
-      <img src="consolegif.gif" alt="Server Startup Animation" className="w-[400px] h-[300px] object-contain rounded-md" />
-    </div>
-  </div>
-</section>
+        // Hero Section
+        React.createElement('section', { className: "px-6 md:px-12 lg:px-24 pt-20 pb-32 relative overflow-hidden" },
+                    React.createElement('div', { className: "absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-red-500/10" }),
+          React.createElement('div', { className: "relative z-10 max-w-4xl" },
+            React.createElement('h1', { className: "text-5xl md:text-7xl font-bold leading-tight mb-8" },
+              React.createElement('span', { className: "venerux-gradient" }, "Venerux"),
+              React.createElement('br'),
+              React.createElement('span', { className: "text-white" }, "мощный хостинг"),
+              React.createElement('br'),
+              React.createElement('span', { className: "text-gray-300 text-3xl md:text-5xl" }, "для серверов Minecraft и не только")
+            ),
+            React.createElement('p', { className: "text-xl text-gray-300 max-w-2xl mb-12 leading-relaxed" },
+              "Простой запуск, стабильная работа, круглосуточная поддержка. Создайте свой игровой мир за считанные минуты."
+            ),
+            React.createElement('div', { className: "flex flex-col sm:flex-row gap-4" },
+              React.createElement('button', {
+                onClick: scrollToPricing,
+                className: "inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-lg rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 pulse-glow cursor-pointer"
+              }, "🚀 Запустить сервер"),
+              React.createElement('a', {
+                href: "https://dash.venerux.ru",
+                className: "inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-gray-600 text-gray-300 font-bold text-lg rounded-xl hover:border-orange-500 hover:text-orange-400 transition-all duration-300"
+              }, "📊 Панель управления")
+            )
+          )
+        ),
 
-          {/* Pricing Plans */}
-          <section className="px-6 md:px-12 lg:px-24 mb-20">
-            <h2 className="text-xl md:text-2xl font-bold mb-6 text-orange-500">Тарифы</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              {plans.map((plan, index) => (
-                <div
-                  key={index}
-                  onMouseEnter={() => setHoveredPlan(index)}
-                  onMouseLeave={() => setHoveredPlan(null)}
-                  className={`border border-gray-800 rounded-md p-6 transition-all duration-300 ${
-                    hoveredPlan === index ? 'bg-gray-900 border-orange-500' : ''
-                  }`}
-                >
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-bold">{plan.name}</h3>
-                    <span className="text-2xl">{plan.emoji}</span>
-                  </div>
-                  <ul className="space-y-2 text-sm text-gray-400 mb-4">
-                    <li>ОЗУ: <strong className="text-white">{plan.ram}</strong></li>
-                    <li>CPU: <strong className="text-white">{plan.cpu}</strong></li>
-                    <li>SSD: <strong className="text-white">{plan.ssd}</strong></li>
-                    <li>Слоты: <strong className="text-white">{plan.slots}</strong></li>
-                    <li>Цена: <strong className="text-orange-500">{plan.price}</strong></li>
-                  </ul>
-                  <p className="text-xs text-gray-500 italic mb-4">{plan.idealFor}</p>
-                  <a
-                    href="https://t.me/venerux_bot"
-                    className="block text-center text-orange-500 font-medium text-sm uppercase tracking-wide border border-orange-500 py-2 rounded hover:bg-orange-500 hover:text-black transition-colors"
-                  >
-                    Выбрать тариф
-                  </a>
-                </div>
-              ))}
-            </div>
-          </section>
+        // Features Section
+        React.createElement('section', { id: "features", className: "px-6 md:px-12 lg:px-24 mb-32" },
+          React.createElement('div', { className: "text-center mb-16" },
+            React.createElement('h2', { className: "text-4xl md:text-5xl font-bold mb-6" },
+              React.createElement('span', { className: "text-gradient" }, "Преимущества")
+            ),
+            React.createElement('p', { className: "text-xl text-gray-400 max-w-2xl mx-auto" },
+              "Мы предоставляем все необходимое для комфортной игры"
+            )
+          ),
+          React.createElement('div', { className: "grid lg:grid-cols-2 gap-12 items-center" },
+            React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-6" },
+              ...features.map((feature, idx) =>
+                React.createElement('div', {
+                  key: idx,
+                  onMouseEnter: () => setHoveredFeature(idx),
+                  onMouseLeave: () => setHoveredFeature(null),
+                  className: `card-gradient border border-gray-700/50 p-6 rounded-2xl hover-lift transition-all duration-300 ${hoveredFeature === idx ? 'border-orange-500/50 glow-orange' : ''}`
+                },
+                  React.createElement('div', { className: `w-12 h-12 rounded-xl bg-gradient-to-r ${feature.color} flex items-center justify-center mb-4 text-white` },
+                    feature.icon
+                  ),
+                  React.createElement('h3', { className: "text-xl font-bold mb-3 text-white" }, feature.title),
+                  React.createElement('p', { className: "text-gray-400 leading-relaxed" }, feature.description)
+                )
+              )
+            ),
+            React.createElement('div', { className: "flex items-center justify-center" },
+              React.createElement('div', { className: "relative" },
+                React.createElement('div', { className: "absolute inset-0 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-3xl blur-xl" }),
+                React.createElement('img', {
+                  src: "consolegif.gif",
+                  alt: "Server Startup Animation",
+                  className: "relative w-full max-w-md h-1800 object-contain rounded-2xl border border-gray-700/50"
+                })
+              )
+            )
+          )
+        ),
 
-          {/* Call to Action */}
-          <section className="px-6 md:px-12 lg:px-24 mb-20">
-            <div className="border border-gray-800 p-8 rounded-md text-center">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">Запусти свой сервер уже сегодня!</h2>
-              <p className="text-gray-400 mb-6">Выбери тариф, оплати через Telegram бота и получи доступ мгновенно.</p>
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <a
-                  href="https://t.me/venerux_bot"
-                  className="py-3 px-6 bg-orange-500 text-black font-bold uppercase tracking-wider border border-orange-500 hover:bg-transparent hover:text-orange-500 transition-colors"
-                >
-                  Купить сервер
-                </a>
-                <a
-                  href="https://dash.venerux.ru"
-                  className="py-3 px-6 bg-transparent border border-gray-600 text-gray-400 font-bold uppercase tracking-wider hover:border-orange-500 hover:text-orange-500 transition-colors"
-                >
-                  Панель управления
-                </a>
-              </div>
-            </div>
-          </section>
+        // Pricing Plans
+        React.createElement('section', { id: "pricing", className: "px-6 md:px-12 lg:px-24 mb-32" },
+          React.createElement('div', { className: "text-center mb-16" },
+            React.createElement('h2', { className: "text-4xl md:text-5xl font-bold mb-6" },
+              React.createElement('span', { className: "text-gradient" }, "Тарифы")
+            ),
+            React.createElement('p', { className: "text-xl text-gray-400 max-w-2xl mx-auto" },
+              "Выберите подходящий план для вашего проекта"
+            )
+          ),
+          
+          // Filters
+          React.createElement('div', { className: "mb-12 flex flex-col sm:flex-row gap-6 justify-center" },
+            React.createElement('div', { className: "flex flex-col" },
+              React.createElement('label', { className: "text-sm text-gray-400 mb-3 font-medium" }, "Локация:"),
+              React.createElement('select', {
+                value: selectedLocation,
+                onChange: (e) => setSelectedLocation(e.target.value),
+                className: "bg-gray-900/80 border border-gray-700 text-white px-6 py-3 rounded-xl focus:border-orange-500 focus:outline-none transition-colors backdrop-blur-sm"
+              },
+                React.createElement('option', { value: "all" }, "Все локации"),
+                React.createElement('option', { value: "moscow" }, "🇷🇺 Москва"),
+                React.createElement('option', { value: "frankfurt" }, "🇩🇪 Франкфурт")
+              )
+            ),
+            React.createElement('div', { className: "flex flex-col" },
+              React.createElement('label', { className: "text-sm text-gray-400 mb-3 font-medium" }, "Процессор:"),
+              React.createElement('select', {
+                value: selectedProcessor,
+                onChange: (e) => setSelectedProcessor(e.target.value),
+                className: "bg-gray-900/80 border border-gray-700 text-white px-6 py-3 rounded-xl focus:border-orange-500 focus:outline-none transition-colors backdrop-blur-sm"
+              },
+                React.createElement('option', { value: "all" }, "Все процессоры"),
+                React.createElement('option', { value: "amd-epyc" }, "AMD EPYC 7551P"),
+                React.createElement('option', { value: "intel-i9" }, "Intel Core i9-9900K"),
+                React.createElement('option', { value: "ryzen-9-3900" }, "Ryzen 9 3900")
+              )
+            )
+          ),
 
-          {/* Footer */}
-          <footer className="px-6 md:px-12 lg:px-24 pb-12 text-xs text-gray-600">
-            <p>Venerux Hosting Provider © 2025</p>
-            <p className="mt-1">Designed by bUmmy ♡</p>
-          </footer>
-        </div>
+          // Plans Grid
+          React.createElement('div', { className: "grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" },
+            ...filteredPlans.map((plan, index) =>
+              React.createElement('div', {
+                key: `${plan.location}-${plan.processor}-${plan.name}`,
+                onMouseEnter: () => setHoveredPlan(index),
+                onMouseLeave: () => setHoveredPlan(null),
+                className: `relative card-gradient border rounded-2xl p-8 transition-all duration-300 hover-lift ${hoveredPlan === index ? 'border-orange-500/50 glow-orange' : 'border-gray-700/50'} ${plan.popular ? 'border-orange-500/70' : ''}`
+              },
+                plan.popular && React.createElement('div', { className: "absolute -top-4 left-1/2 transform -translate-x-1/2" },
+                  React.createElement('span', { className: "bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-full text-sm font-bold" },
+                    "Популярный"
+                  )
+                ),
+                React.createElement('div', { className: "flex justify-between items-center mb-6" },
+                  React.createElement('h3', { className: "text-2xl font-bold text-white" }, plan.name),
+                  React.createElement('span', { className: "text-3xl" }, plan.emoji)
+                ),
+                React.createElement('div', { className: "mb-6 p-4 bg-gray-800/50 rounded-xl border border-gray-700/30" },
+                  React.createElement('div', { className: "text-sm text-gray-300 mb-2 flex items-center gap-2" },
+  React.createElement('span', { 
+    className: `flag-icon ${plan.location === 'moscow' ? 'flag-ru' : 'flag-de'}` 
+  }),
+  React.createElement('span', { className: "text-orange-400 font-medium" }, plan.locationName)
+),
+                  React.createElement('div', { className: "text-sm text-gray-300 flex items-center gap-2" },
+                    React.createElement('span', null, "🖥️"),
+                    React.createElement('span', { className: "text-blue-400 font-medium" }, plan.processorName)
+                  )
+                ),
+                React.createElement('div', { className: "space-y-4 mb-6" },
+                  React.createElement('div', { className: "flex justify-between items-center" },
+                    React.createElement('span', { className: "text-gray-400" }, "ОЗУ:"),
+                    React.createElement('span', { className: "text-white font-semibold" }, plan.ram)
+                  ),
+                  React.createElement('div', { className: "flex justify-between items-center" },
+                    React.createElement('span', { className: "text-gray-400" }, "CPU:"),
+                    React.createElement('span', { className: "text-white font-semibold" }, plan.cpu)
+                  ),
+                  React.createElement('div', { className: "flex justify-between items-center" },
+                    React.createElement('span', { className: "text-gray-400" }, "SSD:"),
+                    React.createElement('span', { className: "text-white font-semibold" }, plan.ssd)
+                  ),
+                  React.createElement('div', { className: "flex justify-between items-center" },
+                    React.createElement('span', { className: "text-gray-400" }, "Слоты:"),
+                    React.createElement('span', { className: "text-white font-semibold" }, plan.slots)
+                  )
+                ),
+                React.createElement('div', { className: "mb-6" },
+                  React.createElement('div', { className: "text-3xl font-bold text-gradient mb-2" }, plan.price),
+                  React.createElement('p', { className: "text-sm text-gray-400 italic" }, plan.idealFor)
+                ),
+                React.createElement('a', {
+                  href: "https://t.me/venerux_bot",
+                  className: "block w-full text-center bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-3 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300"
+                }, "Выбрать тариф")
+              )
+            )
+          ),
+
+          // No results message
+          filteredPlans.length === 0 && React.createElement('div', { className: "text-center py-16" },
+            React.createElement('div', { className: "text-6xl mb-4" }, "🔍"),
+            React.createElement('p', { className: "text-gray-400 text-xl mb-6" }, "Нет тарифов, соответствующих выбранным фильтрам"),
+            React.createElement('button', {
+              onClick: () => {
+                setSelectedLocation('all');
+                setSelectedProcessor('all');
+              },
+              className: "bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-xl font-medium hover:from-orange-600 hover:to-red-600 transition-all"
+            }, "Сбросить фильтры")
+          )
+        ),
+
+        // Server Locations Info
+        React.createElement('section', { id: "locations", className: "px-6 md:px-12 lg:px-24 mb-32" },
+          React.createElement('div', { className: "text-center mb-16" },
+            React.createElement('h2', { className: "text-4xl md:text-5xl font-bold mb-6" },
+              React.createElement('span', { className: "text-gradient" }, "Наши локации")
+            ),
+            React.createElement('p', { className: "text-xl text-gray-400 max-w-2xl mx-auto" },
+              "Серверы в ключевых точках для минимальной задержки"
+            )
+          ),
+          React.createElement('div', { className: "grid md:grid-cols-2 gap-8" },
+            React.createElement('div', { className: "card-gradient border border-gray-700/50 p-8 rounded-2xl hover-lift" },
+              React.createElement('div', { className: "flex items-center gap-4 mb-6" },
+                React.createElement('div', { className: "flag-icon flag-ru w-12 h-9" }),
+                React.createElement('div', null,
+                  React.createElement('h3', { className: "text-2xl font-bold text-white" }, "Москва, Россия"),
+                  React.createElement('p', { className: "text-orange-400" }, "Российская локация")
+                )
+              ),
+              React.createElement('div', { className: "space-y-4" },
+                React.createElement('div', { className: "flex justify-between" },
+                  React.createElement('span', { className: "text-gray-400" }, "Процессор:"),
+                  React.createElement('span', { className: "text-white font-semibold" }, "AMD EPYC 7551P")
+                ),
+                React.createElement('div', { className: "flex justify-between" },
+                  React.createElement('span', { className: "text-gray-400" }, "Ядра/ОЗУ:"),
+                  React.createElement('span', { className: "text-white font-semibold" }, "4 ядра / 4 ГБ")
+                ),
+                React.createElement('div', { className: "flex justify-between" },
+                  React.createElement('span', { className: "text-gray-400" }, "Пинг из России:"),
+                  React.createElement('span', { className: "text-green-400 font-semibold" }, "~5-15ms")
+                ),
+                React.createElement('div', { className: "flex justify-between" },
+                  React.createElement('span', { className: "text-gray-400" }, "Особенности:"),
+                  React.createElement('span', { className: "text-white font-semibold" }, "Низкая задержка для СНГ")
+                )
+              )
+            ),
+                        React.createElement('div', { className: "card-gradient border border-gray-700/50 p-8 rounded-2xl hover-lift" },
+              React.createElement('div', { className: "flex items-center gap-4 mb-6" },
+                React.createElement('div', { className: "flag-icon flag-de w-12 h-9" }),
+                React.createElement('div', null,
+                  React.createElement('h3', { className: "text-2xl font-bold text-white" }, "Франкфурт, Германия"),
+                  React.createElement('p', { className: "text-blue-400" }, "Европейская локация")
+                )
+              ),
+              React.createElement('div', { className: "space-y-4" },
+                React.createElement('div', { className: "flex justify-between" },
+                  React.createElement('span', { className: "text-gray-400" }, "Процессоры:"),
+                  React.createElement('span', { className: "text-white font-semibold" }, "Intel i9, Ryzen 9")
+                ),
+                React.createElement('div', { className: "flex justify-between" },
+                  React.createElement('span', { className: "text-gray-400" }, "Конфигурации:"),
+                  React.createElement('span', { className: "text-white font-semibold" }, "2-10 ядер")
+                ),
+                React.createElement('div', { className: "flex justify-between" },
+                  React.createElement('span', { className: "text-gray-400" }, "Пинг из Европы:"),
+                  React.createElement('span', { className: "text-green-400 font-semibold" }, "~10-30ms")
+                ),
+                React.createElement('div', { className: "flex justify-between" },
+                  React.createElement('span', { className: "text-gray-400" }, "Особенности:"),
+                  React.createElement('span', { className: "text-white font-semibold" }, "Связность с Европой")
+                )
+              )
+            )
+          )
+        ),
+
+        // Statistics Section
+        React.createElement('section', { className: "px-6 md:px-12 lg:px-24 mb-32" },
+          React.createElement('div', { className: "card-gradient border border-gray-700/50 rounded-3xl p-12" },
+            React.createElement('div', { className: "grid grid-cols-2 md:grid-cols-4 gap-8 text-center" },
+              React.createElement('div', null,
+                React.createElement('div', { className: "text-4xl md:text-5xl font-bold text-gradient mb-2" }, "99.9%"),
+                React.createElement('div', { className: "text-gray-400" }, "Время работы")
+              ),
+              React.createElement('div', null,
+                React.createElement('div', { className: "text-4xl md:text-5xl font-bold text-gradient mb-2" }, "24/7"),
+                React.createElement('div', { className: "text-gray-400" }, "Поддержка")
+              ),
+              React.createElement('div', null,
+                React.createElement('div', { className: "text-4xl md:text-5xl font-bold text-gradient mb-2" }, "7"),
+                React.createElement('div', { className: "text-gray-400" }, "Уникальных функций")
+              ),
+              React.createElement('div', null,
+                React.createElement('div', { className: "text-4xl md:text-5xl font-bold text-gradient mb-2" }, "5мин"),
+                React.createElement('div', { className: "text-gray-400" }, "Время запуска")
+              )
+            )
+          )
+        ),
+
+        // Call to Action
+        React.createElement('section', { className: "px-6 md:px-12 lg:px-24 mb-32" },
+          React.createElement('div', { className: "relative overflow-hidden" },
+            React.createElement('div', { className: "absolute inset-0 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-3xl blur-xl" }),
+            React.createElement('div', { className: "relative card-gradient border border-orange-500/30 rounded-3xl p-12 text-center" },
+              React.createElement('div', { className: "max-w-3xl mx-auto" },
+                React.createElement('h2', { className: "text-4xl md:text-5xl font-bold mb-6" },
+                  "Запусти свой сервер ",
+                  React.createElement('span', { className: "text-gradient" }, "уже сегодня!")
+                ),
+                React.createElement('p', { className: "text-xl text-gray-300 mb-10 leading-relaxed" },
+                  "Выбери тариф, оплати через Telegram бота и получи доступ мгновенно. Никаких сложных настроек — просто играй!"
+                ),
+                React.createElement('div', { className: "flex flex-col sm:flex-row justify-center gap-6" },
+                  React.createElement('a', {
+                    href: "https://t.me/venerux_bot",
+                    className: "inline-flex items-center justify-center px-10 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-lg rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 pulse-glow"
+                  }, "🚀 Купить сервер"),
+                  React.createElement('a', {
+                    href: "https://dash.venerux.ru",
+                    className: "inline-flex items-center justify-center px-10 py-4 bg-transparent border-2 border-gray-600 text-gray-300 font-bold text-lg rounded-xl hover:border-orange-500 hover:text-orange-400 transition-all duration-300"
+                  }, "📊 Панель управления")
+                )
+              )
+            )
+          )
+        ),
+
+        // Footer
+        React.createElement('footer', { className: "px-6 md:px-12 lg:px-24 pb-12" },
+          React.createElement('div', { className: "border-t border-gray-800/50 pt-12" },
+            React.createElement('div', { className: "flex flex-col md:flex-row justify-between items-center gap-6" },
+              React.createElement('div', null,
+                React.createElement('div', { className: "text-2xl font-bold venerux-gradient mb-2" }, "Venerux"),
+                React.createElement('p', { className: "text-gray-400" }, "All Rights Reserved © 2025")
+              ),
+              React.createElement('div', { className: "flex flex-col md:flex-row items-center gap-6" },
+                React.createElement('div', { className: "flex space-x-6" },
+                  React.createElement('a', { href: "https://t.me/venerux_bot", className: "text-gray-400 hover:text-orange-400 transition-colors" }, "Telegram Bot"),
+                  React.createElement('a', { href: "https://dash.venerux.ru", className: "text-gray-400 hover:text-orange-400 transition-colors" }, "Dashboard")
+                ),
+                React.createElement('p', { className: "text-sm text-gray-500" }, "Designed by bUmmy ♡")
+              )
+            )
+          )
+        )
       );
     }
 
-    // --- SVG Icons ---
+    // SVG Icons
     function LightningIcon() {
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-          <path d="M13 2L3 14h9l-1 8L21 10h-9l1-8z" />
-        </svg>
+      return React.createElement('svg', {
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        className: "w-6 h-6"
+      },
+        React.createElement('path', { d: "M13 2L3 14h9l-1 8L21 10h-9l1-8z" })
       );
     }
 
     function ShieldIcon() {
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-        </svg>
+      return React.createElement('svg', {
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        className: "w-6 h-6"
+      },
+        React.createElement('path', { d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" })
       );
     }
 
     function BackupIcon() {
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-          <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
+      return React.createElement('svg', {
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        className: "w-6 h-6"
+      },
+        React.createElement('path', { d: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" })
       );
     }
 
     function SupportIcon() {
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-        </svg>
+      return React.createElement('svg', {
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        className: "w-6 h-6"
+      },
+        React.createElement('circle', { cx: "12", cy: "12", r: "4" }),
+        React.createElement('path', { d: "M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" })
       );
     }
 
     // Error Boundary Component
     class ErrorBoundary extends React.Component {
-      state = { hasError: false };
+      constructor(props) {
+        super(props);
+        this.state = { hasError: false };
+      }
 
       static getDerivedStateFromError(error) {
         return { hasError: true };
       }
 
+      componentDidCatch(error, errorInfo) {
+        console.error('Error caught by boundary:', error, errorInfo);
+      }
+
       render() {
         if (this.state.hasError) {
-          return <h1 className="text-red-500 text-center">Something went wrong. Please check the console for details.</h1>;
+          return React.createElement('h1', { 
+            className: "text-red-500 text-center p-8" 
+          }, "Something went wrong. Please check the console for details.");
         }
         return this.props.children;
       }
     }
 
-    // Render the app with createRoot
-    const root = ReactDOM.createRoot(document.getElementById('root'));
+    // Render the app
+    const container = document.getElementById('root');
+    const root = ReactDOM.createRoot(container);
     root.render(
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
+      React.createElement(ErrorBoundary, null,
+        React.createElement(App)
+      )
     );
   </script>
 </body>
